@@ -85,13 +85,11 @@ cp .env.example .env       # then paste your key into .env
 Walks every stage on your actual résumé. The **chunking** stage shows the
 hierarchy plainly: each role is a *parent* (returned for full context); each
 bullet is a *child* (embedded & searched for precision):
-
 ![Hierarchical chunking](docs/screenshots/02-chunking.png)
 
 The **retrieve** stage is the glass box — every bullet's dense / BM25 / RRF /
 rerank score, a 2D map of the embedding space, and the whole matched role that
 gets handed to the model:
-
 ![Two-stage hybrid retrieval](docs/screenshots/03-retrieve.png)
 
 ### 📊 Retrieval evaluation
@@ -116,7 +114,6 @@ Search a **pool** of résumés: filter on the structured fields, then rank
 candidates for a free-text need, each shown with the role that matched and why.
 Here's "who has shipped fault-tolerant distributed systems?" — the two
 distributed-systems engineers rank top, frontend/ML at the bottom:
-
 ![Multi-résumé candidate ranking](docs/screenshots/04-talent-pool.png)
 
 ---
