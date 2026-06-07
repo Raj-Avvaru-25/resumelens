@@ -9,11 +9,26 @@ Two halves:
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import plotly.graph_objects as go
 import streamlit as st
 
 from rag import config, evaluation, faithfulness, generator, query_transform
-from rag.pipeline import ResumeIndex, retrieve
+from rag.loader import load_from_text
+from rag.pipeline import ResumeIndex, build_index, retrieve
+
+_SAMPLE = Path(__file__).resolve().parent.parent / "data" / "sample_resume.txt"
+
+
+def _sample_index() -> ResumeIndex:
+    """Evaluation always runs on the bundled sample — the document the gold set is
+    hand-labeled for. A gold set is meaningless against any other résumé."""
+    if "eval_index" not in st.session_state:
+        st.session_state["eval_index"] = build_index(
+            load_from_text(_SAMPLE.read_text(encoding="utf-8"))
+        )
+    return st.session_state["eval_index"]
 
 
 def render(index: ResumeIndex, api_key: str | None):
@@ -22,10 +37,17 @@ def render(index: ResumeIndex, api_key: str | None):
         "The honest part of any RAG system: **measuring** quality instead of "
         "trusting it. Retrieval metrics below; generation faithfulness underneath."
     )
+    st.info(
+        "These metrics run on the **bundled sample résumé** — the document the gold "
+        "set is hand-labeled for. Whatever résumé you pick in the sidebar won't "
+        "change them: a gold set only applies to its own document. To evaluate a "
+        "different résumé, write its labels in `rag/evaluation.py`."
+    )
 
-    _retrieval_section(index, api_key)
+    sample = _sample_index()  # NOT the sidebar résumé — eval needs its labeled doc
+    _retrieval_section(sample, api_key)
     st.divider()
-    _faithfulness_section(index, api_key)
+    _faithfulness_section(sample, api_key)
 
 
 # --- 1. Retrieval quality ----------------------------------------------------
