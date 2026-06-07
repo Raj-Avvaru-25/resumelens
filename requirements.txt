@@ -1,0 +1,8 @@
+streamlit>=1.40
+anthropic>=0.69
+sentence-transformers>=2.7
+numpy>=1.26
+scikit-learn>=1.4
+plotly>=5.22
+pypdf>=4.2
+python-dotenv>=1.0

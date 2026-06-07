@@ -1,0 +1,33 @@
+SARA NWANKWO
+Staff Infrastructure Engineer
+sara.nwankwo@email.com | Remote (US)
+
+SUMMARY
+Staff-level infrastructure and reliability engineer with 9 years running
+large-scale distributed systems. Deep on Kubernetes, observability, and incident
+response. Comfortable owning systems end to end and leading cross-team efforts.
+
+EXPERIENCE
+
+Staff Infrastructure Engineer, Hyperscale Inc (2019 - Present)
+Own the multi-region Kubernetes platform (4,000+ nodes) serving every internal team.
+Led the migration to cell-based architecture, reducing blast radius so a single
+failure affects under 5% of traffic instead of 100%.
+Cut p99 control-plane latency by 70% by redesigning the scheduler's caching layer.
+Run the org's incident-review program and on-call training.
+
+Site Reliability Engineer, DataForge (2015 - 2019)
+Built the autoscaling system for a streaming data platform.
+Owned the distributed tracing rollout across 120 services.
+
+PROJECTS
+
+Quorum — open-source distributed lock manager
+A fault-tolerant lock service built on Raft with sub-second failover. Wrote the
+consensus integration and the lease-management logic. ~2.1k GitHub stars.
+
+SKILLS
+Go, Rust, Kubernetes, Terraform, Prometheus, gRPC, Kafka, PostgreSQL, AWS, GCP
+
+EDUCATION
+B.S. in Computer Engineering, University of Lagos (2011 - 2015)

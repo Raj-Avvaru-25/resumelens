@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment (940MB — never commit)
+.venv/
+venv/
+env/
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# Editor / OS / tool state
+.claude/
+.DS_Store
+*.log
+
+# Model caches (usually in ~/.cache, but just in case)
+.cache/
+models/

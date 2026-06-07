@@ -1,0 +1,33 @@
+MARCUS OKAFOR
+Senior Machine Learning Engineer
+marcus.okafor@email.com | London, UK
+
+SUMMARY
+Senior ML engineer with 7 years building recommendation and ranking systems.
+Comfortable from data pipelines to model serving. Interested in large-scale
+training and online evaluation.
+
+EXPERIENCE
+
+Senior Machine Learning Engineer, StreamlyTV (2020 - Present)
+Own the homepage recommendation model serving 30M users.
+Rebuilt the candidate-ranking model, lifting watch-time per session by 11% in A/B tests.
+Moved training from a single GPU to distributed data-parallel training across 16 GPUs,
+cutting model iteration time from 2 days to 4 hours.
+Set up an online evaluation framework with guardrail metrics.
+
+Machine Learning Engineer, Adverity (2017 - 2020)
+Built click-through-rate prediction models for ad ranking.
+Designed the feature store used by the whole ML team.
+
+PROJECTS
+
+EmbedRank — open-source semantic search library
+A library for building hybrid (dense + BM25) search with rerankers. Wrote the
+indexing and fusion logic. ~1.5k GitHub stars.
+
+SKILLS
+Python, PyTorch, TensorFlow, Spark, Kafka, Kubernetes, AWS, SQL, Ray
+
+EDUCATION
+M.S. in Machine Learning, Imperial College London (2015 - 2017)

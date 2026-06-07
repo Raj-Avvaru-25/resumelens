@@ -1,0 +1,44 @@
+PRIYA SHARMA
+Senior Software Engineer
+priya.sharma@email.com | github.com/priyasharma | Bengaluru, India
+
+SUMMARY
+Backend-focused engineer with 6 years building distributed systems and
+data-intensive services. Comfortable owning a feature end to end, from API design
+to on-call. Particularly interested in latency optimization and event-driven
+architectures.
+
+EXPERIENCE
+
+Senior Software Engineer, FlowPay (2021 - Present)
+Built and own the real-time payments ledger that processes ~4M transactions/day.
+Redesigned the double-entry posting service to be idempotent, cutting duplicate
+postings from ~120/week to near zero after a major outage.
+Led migration of the settlement pipeline from a nightly batch job to a streaming
+model on Kafka, reducing settlement latency from 18 hours to under 5 minutes.
+Mentored 3 junior engineers and run the team's weekly design review.
+
+Software Engineer, Nimbus Analytics (2018 - 2021)
+Worked on the query layer of a time-series analytics product.
+Implemented a caching layer (Redis) for hot dashboards that reduced p95 query
+latency by 60%.
+Wrote the data ingestion connectors for 5 third-party sources.
+
+PROJECTS
+
+Chronos — open-source distributed cron scheduler
+Designed and built a fault-tolerant scheduler that guarantees at-least-once job
+execution across a cluster using a Raft-backed metadata store. Handles leader
+failover in under 2 seconds. ~900 GitHub stars. Wrote the consensus layer and the
+job-dispatch logic myself.
+
+ResumeRank — ML side project
+A small service that ranks resumes against a job description using sentence
+embeddings and a learned re-ranker. Built the embedding pipeline and the API;
+used a colleague's labeled dataset for evaluation.
+
+SKILLS
+Go, Python, Java, Kafka, PostgreSQL, Redis, gRPC, Kubernetes, AWS, Terraform
+
+EDUCATION
+B.Tech in Computer Science, National Institute of Technology (2014 - 2018)

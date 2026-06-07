@@ -1,0 +1,31 @@
+ANA MARTINEZ
+Frontend Engineer
+ana.martinez@email.com | Barcelona, Spain
+
+SUMMARY
+Frontend engineer with 4 years building accessible, performant web apps. Strong in
+React and TypeScript, design-systems minded. Have not worked on backend or
+distributed systems.
+
+EXPERIENCE
+
+Frontend Engineer, BrightCart (2022 - Present)
+Own the checkout UI for an e-commerce platform used by 200k monthly shoppers.
+Cut Largest Contentful Paint from 4.1s to 1.8s by code-splitting and image lazy-loading.
+Built the company's reusable component library (40+ components) adopted by 3 teams.
+
+Junior Frontend Developer, PixelWorks (2020 - 2022)
+Implemented responsive marketing pages from Figma designs.
+Improved Lighthouse accessibility score from 72 to 98 across the main site.
+
+PROJECTS
+
+a11y-checker — open-source accessibility linter
+A small browser extension that flags WCAG violations live on any page. Built the
+rules engine and the popup UI. ~300 GitHub stars.
+
+SKILLS
+JavaScript, TypeScript, React, Next.js, CSS, HTML, Jest, Playwright, Figma
+
+EDUCATION
+B.A. in Interaction Design, Universitat de Barcelona (2016 - 2020)
