@@ -96,12 +96,26 @@ def _render_setup_sidebar() -> None:
             st.session_state["api_key"] = env_key
         else:
             key = st.text_input(
-                "Anthropic API key", type="password",
-                help="Needed only for Claude-powered pages. Retrieval works without it.",
+                "🔑 Your Anthropic API key",
+                type="password",
+                placeholder="sk-ant-...",
+                help="Held only in memory for your session and used solely to call "
+                     "Anthropic — never stored, logged, or shared.",
             ) or None
             st.session_state["api_key"] = key
-            if not key:
-                st.info("No key yet — the RAG tour, retrieval and eval still work.")
+            if key:
+                st.success("Key set for this session — Claude pages unlocked.")
+            else:
+                st.info(
+                    "**Bring your own key** to unlock the Claude-powered pages "
+                    "(Deep understanding, Cynical recruiter, Structured profile).\n\n"
+                    "The **RAG tour, retrieval evaluation, and talent-pool ranking "
+                    "work with no key.**"
+                )
+                st.caption(
+                    "[Get an API key →](https://console.claude.com/)  ·  Your key "
+                    "lives only in this session and is sent only to Anthropic."
+                )
 
         # --- Résumé source ---
         source = st.radio(
