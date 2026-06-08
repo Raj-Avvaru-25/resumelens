@@ -143,6 +143,80 @@ QUESTION
 
 ---
 
+## 🧠 Understanding the system
+
+### The problem RAG solves
+An LLM doesn't know your private documents, and you can't paste unlimited text into
+a prompt. **RAG (Retrieval-Augmented Generation)** fixes both: *retrieve* the most
+relevant slices of **your** data, then *augment* the prompt with them so the model
+answers from facts, not memory. For a single résumé you could paste the whole
+thing — but the moment you have *many*, you **must** retrieve. That's why the
+**Talent pool** is where RAG stops being optional.
+
+### The central trade-off (and how this app resolves it)
+Chunk size is a tug-of-war:
+
+- **Big chunks** (a whole role) → rich **context**, but **blurry retrieval** (one
+  vector has to average everything in the role, so it matches nothing sharply).
+- **Small chunks** (a single bullet) → **sharp retrieval**, but **no context**.
+
+You can't win with one size — so we keep **both**: embed/search the small **bullets**
+(precision) and return the whole **role** (context). That's **small-to-big**, and
+it's the spine of the whole system.
+
+### Concepts in 30 seconds
+| Term | Plain meaning |
+|------|---------------|
+| **Embedding** | text → a vector of numbers; similar *meaning* lands at nearby vectors |
+| **Dense retrieval** | match by meaning (embeddings + cosine similarity) |
+| **BM25 (lexical)** | match by exact keywords (a smart TF-IDF); catches terms embeddings gloss over |
+| **RRF** | Reciprocal Rank Fusion — merge two ranked lists by *position*, no score calibration needed |
+| **Cross-encoder rerank** | re-reads `(query, chunk)` *together* for a precise relevance score; slow, so run only on a few candidates |
+| **Small-to-big** | search the children (bullets), return the parents (roles) |
+| **HyDE** | embed a *hypothetical answer* instead of the raw question |
+| **Multi-query** | search several rewrites of the question and fuse the results |
+| **Citations** | model output linked to exact source spans, *verified by the API* |
+| **Recall@k / MRR@k** | did the right item make the top-k / how high did it rank |
+| **Faithfulness** | is the generated answer actually supported by the source |
+
+### The data model (the nouns in the code)
+| Object | Is | Role in retrieval | Defined in |
+|--------|----|-------------------|-----------|
+| **Chunk** (child) | one bullet / line | the **searchable** unit (embedded + BM25) | `rag/chunker.py` |
+| **Parent** | one role / section entry | the **returned** unit (full context) | `rag/chunker.py` |
+| **Profile** | typed extraction (roles, skills, seniority…) | the **filterable** facts | `rag/extraction.py` |
+| **ResumeIndex** | one résumé's children + vectors + BM25 + parents | a single searchable résumé | `rag/pipeline.py` |
+| **Corpus** | many `ResumeIndex` + `Profile`s | the **Talent pool** | `rag/corpus.py` |
+
+### Follow one query end-to-end
+Trace *"What consensus algorithm did they use?"* on the sample résumé:
+
+1. **Embed the query** (with the bge query instruction). → `embedder.embed_query`
+2. **Score every bullet** two ways: dense (meaning) + BM25 (keywords). The bullet
+   *"…fault-tolerant scheduler … Raft-backed metadata store…"* scores high.
+3. **Fuse** the two rankings with RRF → a shortlist of candidate bullets.
+4. **Rerank** the shortlist with the cross-encoder; the Raft bullet wins on a
+   true `(query, bullet)` read. → `reranker.rerank`
+5. **Roll up to the parent** → return the **whole Chronos project role**, not just
+   the bullet. → `pipeline.retrieve`
+6. **Augment**: hand Claude the returned role(s) — or the full résumé — plus the
+   question. → `generator`
+7. **Generate** the answer, optionally with a citation back to the exact bullet.
+
+Every number along that path is visible live in **🔍 How RAG works → ④ Retrieve**.
+
+### Why these design choices
+| Decision | Why |
+|----------|-----|
+| Structure-aware chunks, not fixed-size | a résumé is *sections → roles → bullets*; cutting every N chars shreds meaning mid-thought |
+| Hybrid, not dense-only | embeddings miss exact tokens (acronyms, `p95`, library names); BM25 covers that blind spot |
+| A reranker | the biggest precision win — first-stage scores are noisy; the cross-encoder actually *reads* relevance |
+| Full-résumé context in single-doc modes | it fits the window, so retrieval is the *focusing lens* + teaching device, not a crutch |
+| Local embeddings + Claude only for generation | watch vectors build locally for free; spend tokens only where they add value |
+| Eval on a labeled sample | a gold set only applies to *its own* document — see the Evaluation page's banner |
+
+---
+
 ## 📁 Project layout
 
 | Path | What it is |
