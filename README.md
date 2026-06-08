@@ -3,9 +3,8 @@ title: ResumeLens
 emoji: 🔍
 colorFrom: indigo
 colorTo: blue
-sdk: streamlit
-sdk_version: 1.40.0
-app_file: app.py
+sdk: docker
+app_port: 7860
 pinned: true
 license: mit
 short_description: A glass-box RAG that reads résumés — and shows its work
