@@ -1,4 +1,4 @@
-"""Resume RAG — a glass-box RAG app for contextual résumé understanding.
+"""ResumeLens — a glass-box RAG app for contextual résumé understanding.
 
 Run with:  streamlit run app.py
 
@@ -31,7 +31,7 @@ from ui import (
     walkthrough,
 )
 
-st.set_page_config(page_title="Resume RAG", page_icon="📄", layout="wide")
+st.set_page_config(page_title="ResumeLens", page_icon="🔍", layout="wide")
 
 SAMPLE_PATH = Path(__file__).parent / "data" / "sample_resume.txt"
 
@@ -137,7 +137,7 @@ def _render_setup_sidebar() -> None:
 # --------------------------------------------------------------------------- #
 
 def page_home() -> None:
-    st.title("📄 Resume RAG")
+    st.title("🔍 ResumeLens")
     st.markdown(
         "#### A glass-box RAG you can actually learn from.\n"
         "It retrieves the most relevant pieces of a résumé and grounds every answer "

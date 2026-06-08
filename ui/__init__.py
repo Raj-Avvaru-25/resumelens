@@ -1,1 +1,1 @@
-"""Streamlit UI pages for the Resume RAG app."""
+"""Streamlit UI pages for the ResumeLens app."""

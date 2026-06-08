@@ -1,8 +1,8 @@
 <div align="center">
 
-# Resume RAG 📄
+# ResumeLens 🔍
 
-### A glass-box RAG you can actually learn from
+### A glass-box RAG that reads résumés — and shows its work
 
 A Retrieval-Augmented Generation app that **understands résumés in context** —
 and **shows you exactly how it does it.**

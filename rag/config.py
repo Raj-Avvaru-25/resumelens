@@ -1,4 +1,4 @@
-"""Central configuration for the Resume RAG app.
+"""Central configuration for the ResumeLens app.
 
 Keeping every tunable knob in one place makes the rest of the codebase easier to
 read: when you wonder "what model is this using?" or "how big is a chunk?", the

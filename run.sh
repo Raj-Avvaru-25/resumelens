@@ -15,6 +15,6 @@ python -m pip install --upgrade pip >/dev/null
 python -m pip install -r requirements.txt
 
 echo
-echo "Launching Resume RAG → http://localhost:8501"
+echo "Launching ResumeLens → http://localhost:8501"
 echo "(Optional: put ANTHROPIC_API_KEY in a .env file to enable the Claude-powered modes.)"
 exec streamlit run app.py
