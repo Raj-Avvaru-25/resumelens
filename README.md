@@ -89,8 +89,8 @@ downloads). No GPU needed — everything runs on CPU.
 
 ```bash
 # 1. Fork this repo on GitHub, then clone YOUR fork:
-git clone https://github.com/<your-username>/resume-rag.git
-cd resume-rag
+git clone https://github.com/<your-username>/resumelens.git
+cd resumelens
 
 # 2. One command does the rest (venv + install + launch):
 ./run.sh
