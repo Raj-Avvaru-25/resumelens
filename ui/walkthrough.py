@@ -160,7 +160,6 @@ def _stage_retrieve(index: ResumeIndex):
             st.code(h.parent.text, language=None)
 
         st.session_state["walk_last_result"] = result
-        st.session_state["walk_last_result"] = result
 
 
 def _plot_embedding_space(index, query_vector, chosen_ids):
@@ -209,9 +208,9 @@ def _plot_embedding_space(index, query_vector, chosen_ids):
 def _stage_generate(index: ResumeIndex, api_key: str | None):
     with st.expander("⑤ GENERATE — Claude answers using the context", expanded=True):
         st.markdown(
-            "Finally we send Claude the context chosen in the sidebar — the **whole "
-            "resume** (cached) for complete understanding, *or* just the **retrieved "
-            "chunks** for cheapest true-RAG — and ask your question. That's the "
+            "Finally we send Claude the context chosen in **⚙️ Advanced settings** — "
+            "the **whole resume** (cached) for complete understanding, *or* just the "
+            "**retrieved chunks** for cheapest true-RAG — and ask your question. That's the "
             "'augmented generation' in RAG. The token readout appears under the answer."
         )
         result = st.session_state.get("walk_last_result")

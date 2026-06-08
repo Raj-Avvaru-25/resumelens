@@ -5,6 +5,9 @@ Usage (with the app running on http://localhost:8501):
 
 Writes PNGs into docs/screenshots/. Drives the key-free views (walkthrough,
 talent-pool ranking, retrieval eval) so no API key is needed.
+
+The app uses st.navigation (grouped sidebar pages), so we navigate by clicking the
+sidebar nav links by their page titles.
 """
 
 from __future__ import annotations
@@ -35,6 +38,14 @@ def run():
         page.wait_for_selector('[data-testid="stAppViewContainer"]')
         page.wait_for_timeout(2000)
 
+        def nav(title: str):
+            """Click a sidebar nav link by its page title (st.navigation)."""
+            link = page.get_by_role("link", name=title, exact=False).first
+            if not link.count():
+                link = page.locator('[data-testid="stSidebarNav"]').get_by_text(title, exact=False).first
+            link.click()
+            page.wait_for_timeout(1500)
+
         def shot(name, fn):
             try:
                 fn()
@@ -42,9 +53,12 @@ def run():
             except Exception as e:  # noqa: BLE001
                 print(f"  ✗ {name}: {e}")
 
+        # Open the walkthrough (the app starts on Home).
+        nav("How RAG works")
+        page.wait_for_selector("text=How RAG works — a guided tour")
+
         # 1. Hero — top of "How RAG works"
         def hero():
-            page.wait_for_selector("text=How RAG works")
             page.evaluate("window.scrollTo(0, 0)")
             page.wait_for_timeout(500)
             page.screenshot(path=str(OUT / "01-hero.png"))
@@ -69,7 +83,7 @@ def run():
 
         # 4. Talent pool — multi-résumé ranking
         def talent():
-            page.get_by_text("🏢 Talent pool", exact=True).first.click()
+            nav("Talent pool")
             page.wait_for_selector("text=Pool ready:")
             page.wait_for_timeout(800)
             page.get_by_role("button", name="Search the pool").click()
@@ -85,7 +99,7 @@ def run():
 
         # 5. Retrieval evaluation chart
         def evaluation():
-            page.get_by_text("📊 Retrieval evaluation", exact=True).first.click()
+            nav("Evaluation")
             page.wait_for_timeout(500)
             page.get_by_role("button", name="Run retrieval eval").click()
             page.wait_for_selector('[data-testid="stPlotlyChart"]')

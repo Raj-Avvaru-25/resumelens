@@ -1,7 +1,23 @@
-# Resume RAG 📄 — a glass-box RAG you can actually learn from
+<div align="center">
 
-A Retrieval-Augmented Generation app that **understands résumés in context** — and
-**shows you exactly how it does it**. It's three things at once:
+# Resume RAG 📄
+
+### A glass-box RAG you can actually learn from
+
+A Retrieval-Augmented Generation app that **understands résumés in context** —
+and **shows you exactly how it does it.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Built with Streamlit](https://img.shields.io/badge/Built%20with-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Powered by Claude](https://img.shields.io/badge/LLM-Claude-D97757)](https://www.anthropic.com/claude)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
+</div>
+
+![How RAG works — guided tour](docs/screenshots/01-hero.png)
+
+**It's three things at once:**
 
 1. **A teacher** — an illustrated, step-by-step tour of every internal RAG stage,
    running on real data (no hand-waving).
@@ -11,7 +27,20 @@ A Retrieval-Augmented Generation app that **understands résumés in context** �
 3. **A recruiter's tool** — deep résumé understanding, a cynical-recruiter grill
    mode, structured profile extraction, and **multi-résumé candidate ranking**.
 
-![How RAG works — guided tour](docs/screenshots/01-hero.png)
+> 💡 **No API key required** to explore the RAG tour, retrieval evaluation, and
+> talent-pool ranking. Add an Anthropic key only to unlock the Claude-powered
+> Q&A, recruiter, and profile extraction.
+
+## Contents
+
+- [Why this is different](#-why-this-is-different-from-a-tutorial-rag)
+- [Quickstart](#-quickstart-fork--run)
+- [A tour of the modes](#-a-tour-of-the-modes)
+- [How it works](#-how-it-works)
+- [Understanding the system](#-understanding-the-system)
+- [Architecture deep dive](#-architecture-deep-dive)
+- [Project layout](#-project-layout)
+- [Limitations & roadmap](#-honest-limitations--roadmap)
 
 ---
 
@@ -31,10 +60,25 @@ the way production systems actually are — and every claim is measured, not ass
 | **Scale** | one document | **multi-résumé pool**: filter + cross-candidate ranking |
 | **Transparency** | black box | **glass-box** walkthrough of every stage |
 
-It doesn't *say* the upgrades help — it shows the numbers (dense → hybrid →
-hybrid+rerank), with headroom to spot regressions:
+It doesn't *say* the upgrades help — it **measures** them, so you can see exactly
+where each technique earns its place (and where it doesn't):
 
 ![Retrieval evaluation](docs/screenshots/05-eval.png)
+
+#### 📈 Results on the bundled sample (16 labeled questions, k = 4)
+
+| Pipeline | Recall@4 | MRR@4 |
+|---|---|---|
+| Dense only | 0.938 | 0.823 |
+| Hybrid (dense + BM25, RRF) | 0.812 | 0.698 |
+| **Hybrid + rerank** | **0.938** | **0.844** |
+
+On this small, cleanly-written résumé, dense retrieval is already strong — and
+naïvely bolting on BM25 can actually *hurt* (lexical noise on a tiny corpus). The
+honest signal the numbers give you: the **cross-encoder reranker is the real lever**
+— it wins back the recall BM25 lost *and* delivers the best ranking (MRR@4 **0.844**).
+That non-obvious result is exactly what an eval harness exists to surface.
+*Reproduce it on the 📊 Evaluation page — no API key needed.*
 
 ---
 
@@ -79,7 +123,13 @@ cp .env.example .env       # then paste your key into .env
 
 ---
 
-## 🧭 A tour of the six modes
+## 🧭 A tour of the modes
+
+The app opens on a **Home** page and groups its modes in the sidebar by what you
+want to do — **Learn**, **Ask**, and **Analyze**. Per-page tuning knobs (context
+size, reasoning effort, query transform, citations) live in a collapsible
+**⚙️ Advanced settings** expander on the pages that use them, so nothing clutters
+the screen until you want it.
 
 ### 🔍 How RAG works — the self-guide
 Walks every stage on your actual résumé. The **chunking** stage shows the
@@ -283,6 +333,7 @@ production:
 
 ## 🔒 Notes
 
-- The two heaviest modes spend Claude tokens; use the sidebar **effort** selector
-  and **token readout** (and the **effort A/B**) to control cost.
+- The two heaviest modes spend Claude tokens; use each page's **⚙️ Advanced
+  settings → Reasoning effort**, the **token readout** under every answer, and the
+  **effort A/B** (in *How RAG works*) to control cost.
 - `.env` is gitignored — no secrets are committed.
