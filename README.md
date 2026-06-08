@@ -215,6 +215,11 @@ Every number along that path is visible live in **🔍 How RAG works → ④ Ret
 | Local embeddings + Claude only for generation | watch vectors build locally for free; spend tokens only where they add value |
 | Eval on a labeled sample | a gold set only applies to *its own* document — see the Evaluation page's banner |
 
+> **Going deeper?** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) is the
+> contributor-level reference — layering, exact object shapes (`Chunk` / `Parent` /
+> `RetrievalResult`), the build & query data flow step by step, and the seams for
+> swapping the embedder, reranker, vector store, or LLM.
+
 ---
 
 ## 📁 Project layout
@@ -238,6 +243,7 @@ Every number along that path is visible live in **🔍 How RAG works → ④ Ret
 | `ui/*.py` | One module per mode |
 | `data/sample_resume.txt`, `data/samples/` | Sample résumés to try instantly |
 | `scripts/capture_screenshots.py` | Regenerates the docs screenshots |
+| `docs/ARCHITECTURE.md` | Contributor-level deep dive (data flow, object shapes, extension points) |
 
 ---
 
