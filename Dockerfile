@@ -9,6 +9,8 @@ ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH \
     STREAMLIT_SERVER_HEADLESS=true \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
+    # Public demo: lock to bundled sample résumés (no upload/paste).
+    DEMO_MODE=1 \
     # Cache downloaded models under the writable HOME.
     HF_HOME=/home/user/.cache/huggingface \
     SENTENCE_TRANSFORMERS_HOME=/home/user/.cache/sentence-transformers

@@ -118,23 +118,31 @@ def _render_setup_sidebar() -> None:
                 )
 
         # --- Résumé source ---
-        source = st.radio(
-            "Résumé source", ["Sample résumé", "Upload (.pdf / .txt)", "Paste text"],
-        )
         resume_text: str | None = None
-        if source == "Sample résumé":
+        if config.DEMO_MODE:
+            # Public demo: lock to the bundled sample; no upload/paste.
             resume_text = load_from_text(SAMPLE_PATH.read_text(encoding="utf-8"))
-        elif source == "Upload (.pdf / .txt)":
-            up = st.file_uploader("Upload", type=["pdf", "txt"], label_visibility="collapsed")
-            if up is not None:
-                resume_text = (
-                    load_from_pdf(up.getvalue()) if up.name.lower().endswith(".pdf")
-                    else load_from_text(up.getvalue().decode("utf-8", errors="ignore"))
-                )
+            st.caption(
+                "🎬 **Demo mode** — exploring with the bundled sample résumé. "
+                "Upload & paste are disabled in the public demo."
+            )
         else:
-            pasted = st.text_area("Paste the résumé text", height=200, label_visibility="collapsed")
-            if pasted.strip():
-                resume_text = load_from_text(pasted)
+            source = st.radio(
+                "Résumé source", ["Sample résumé", "Upload (.pdf / .txt)", "Paste text"],
+            )
+            if source == "Sample résumé":
+                resume_text = load_from_text(SAMPLE_PATH.read_text(encoding="utf-8"))
+            elif source == "Upload (.pdf / .txt)":
+                up = st.file_uploader("Upload", type=["pdf", "txt"], label_visibility="collapsed")
+                if up is not None:
+                    resume_text = (
+                        load_from_pdf(up.getvalue()) if up.name.lower().endswith(".pdf")
+                        else load_from_text(up.getvalue().decode("utf-8", errors="ignore"))
+                    )
+            else:
+                pasted = st.text_area("Paste the résumé text", height=200, label_visibility="collapsed")
+                if pasted.strip():
+                    resume_text = load_from_text(pasted)
         st.session_state["resume_text"] = resume_text
 
         with st.expander("🔧 Models & retrieval"):

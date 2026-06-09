@@ -14,6 +14,13 @@ from dotenv import load_dotenv
 # Load variables from a local .env file (if present) into the environment.
 load_dotenv()
 
+# --- Deployment ---------------------------------------------------------------
+# DEMO_MODE locks the app to the bundled sample résumés (no upload/paste) so a
+# public demo gives a guided taste without accepting arbitrary documents. Set
+# DEMO_MODE=1 in the environment (e.g. the Hugging Face Space) to enable it;
+# local runs stay fully featured.
+DEMO_MODE = os.environ.get("DEMO_MODE", "").strip().lower() in ("1", "true", "yes", "on")
+
 # --- Claude (generation) -----------------------------------------------------
 # claude-opus-4-8 is Anthropic's most capable model. We use it for the two
 # "thinking" features: contextual understanding and the cynical-recruiter grilling.

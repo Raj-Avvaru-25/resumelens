@@ -13,7 +13,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from rag import corpus, generator, query_transform
+from rag import config, corpus, generator, query_transform
 from rag.loader import load_from_pdf, load_from_text
 
 _ROOT = Path(__file__).resolve().parent.parent
@@ -51,11 +51,17 @@ def render(api_key: str | None):
 
     # --- assemble the document set -------------------------------------------
     docs: dict[str, str] = {}
-    if st.checkbox("Use bundled sample pool", value=True):
+    if config.DEMO_MODE:
+        # Public demo: lock to the bundled sample pool; no uploads.
         docs.update(_sample_docs())
-    uploads = st.file_uploader(
-        "Add résumés (.pdf / .txt)", type=["pdf", "txt"], accept_multiple_files=True
-    )
+        st.caption("🎬 **Demo mode** — ranking the bundled sample candidate pool.")
+        uploads = None
+    else:
+        if st.checkbox("Use bundled sample pool", value=True):
+            docs.update(_sample_docs())
+        uploads = st.file_uploader(
+            "Add résumés (.pdf / .txt)", type=["pdf", "txt"], accept_multiple_files=True
+        )
     for up in uploads or []:
         text = (load_from_pdf(up.getvalue()) if up.name.lower().endswith(".pdf")
                 else load_from_text(up.getvalue().decode("utf-8", errors="ignore")))
