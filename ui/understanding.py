@@ -18,10 +18,10 @@ _HISTORY_KEY = "understanding_history"
 
 def render(index: ResumeIndex, api_key: str | None, context_mode: str = "full",
            effort: str = "high", cite: bool = False, transform: str = "none"):
-    st.header("🧠 Deep understanding")
-    st.markdown(
-        "Ask anything about the resume. Claude reads it in full context and grounds "
-        "every claim in the text. Each answer shows which chunks were retrieved."
+    controls.page_header(
+        "🧠",
+        "Deep understanding",
+        "Interrogate the résumé in full context while keeping the retrieved evidence visible.",
     )
     if cite:
         st.info(

@@ -25,17 +25,22 @@ _OPENING_PROMPT = (
 
 def render(index: ResumeIndex, api_key: str | None, context_mode: str = "full",
            effort: str = "high", transform: str = "none"):
-    st.header("😠 The cynical recruiter")
-    st.markdown(
-        "A skeptical interviewer who doesn't take your resume at face value. It will "
-        "demand specifics, hunt for vagueness, and ask the follow-ups a real expert "
-        "would. Answer back — it'll keep pushing."
+    controls.page_header(
+        "⚠",
+        "The cynical recruiter",
+        "Pressure-test bold claims, vague ownership, and technical depth with a skeptical interviewer.",
+    )
+    components.render_editorial_image(
+        "recruiter-room.png",
+        "Interview mode",
+        "Make every claim defensible.",
+        "A skeptical recruiter uses the retrieved résumé evidence to ask the follow-up questions that matter.",
     )
 
     if _HISTORY_KEY not in st.session_state:
         st.session_state[_HISTORY_KEY] = []
 
-    c1, c2 = st.columns([1, 1])
+    c1, c2, _ = st.columns([1.1, 1.4, 4.5])
     start = c1.button("🔥 Grill me", type="primary")
     if c2.button("Reset interview"):
         st.session_state[_HISTORY_KEY] = []

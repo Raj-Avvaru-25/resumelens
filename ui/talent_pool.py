@@ -43,11 +43,10 @@ def _signature(docs: dict[str, str]) -> str:
 
 
 def render(api_key: str | None):
-    st.header("🏢 Talent pool")
-    st.markdown(
-        "Search a **pool** of résumés. This is where RAG earns its keep — too many "
-        "résumés to fit in context, so we retrieve. Filter on structured fields, then "
-        "rank candidates for a free-text need with the evidence behind each match."
+    controls.page_header(
+        "⌁",
+        "Talent pool",
+        "Filter a candidate corpus, rank it against a free-text need, and inspect the evidence behind every match.",
     )
 
     # --- assemble the document set -------------------------------------------

@@ -32,11 +32,10 @@ def _effort() -> str:
 
 
 def render(index: ResumeIndex, api_key: str | None):
-    st.header("🔍 How RAG works — a guided tour")
-    st.markdown(
-        "RAG = **Retrieval-Augmented Generation**. Instead of hoping the model "
-        "memorized your resume, we *retrieve* the most relevant pieces and *augment* "
-        "the prompt with them. Below, each stage runs on your actual resume."
+    controls.page_header(
+        "◎",
+        "Inside the retrieval engine",
+        "Follow your résumé through every stage, from normalized text to grounded generation.",
     )
 
     _stage_load(index)

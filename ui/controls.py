@@ -36,7 +36,7 @@ def advanced_controls(
     if not any((context, effort, transform, cite)):
         return vals
 
-    with st.expander("⚙️ Advanced settings", expanded=False):
+    with st.sidebar.expander("Page settings", expanded=False):
         if context:
             choice = st.radio(
                 "Context sent to Claude",
@@ -94,8 +94,16 @@ def advanced_controls(
 
 def page_header(icon: str, title: str, subtitle: str) -> None:
     """Consistent page title + one-line subtitle."""
-    st.title(f"{icon} {title}")
-    st.caption(subtitle)
+    st.markdown(
+        f"""
+        <header class="rl-page-head">
+          <div class="rl-eyebrow">{icon} ResumeLens</div>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </header>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def api_key_prompt(context: str = "this feature") -> None:

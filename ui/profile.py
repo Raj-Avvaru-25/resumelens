@@ -16,12 +16,10 @@ _KEY = "profile"
 
 
 def render(index: ResumeIndex, api_key: str | None):
-    st.header("🗂️ Structured profile")
-    st.markdown(
-        "Parse the résumé into a **typed schema** with Claude structured outputs. "
-        "This is understanding-as-extraction: a clean, comparable profile instead of "
-        "prose — and the exact fields you'd **filter and rank on across many "
-        "résumés** (feature coming next)."
+    controls.page_header(
+        "◇",
+        "Structured profile",
+        "Transform unstructured résumé text into a typed, comparable candidate intelligence layer.",
     )
     if not api_key:
         controls.api_key_prompt("Structured Profile")

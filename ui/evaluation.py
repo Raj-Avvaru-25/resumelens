@@ -33,10 +33,10 @@ def _sample_index() -> ResumeIndex:
 
 
 def render(index: ResumeIndex, api_key: str | None):
-    st.header("📊 Evaluation")
-    st.markdown(
-        "The honest part of any RAG system: **measuring** quality instead of "
-        "trusting it. Retrieval metrics below; generation faithfulness underneath."
+    controls.page_header(
+        "△",
+        "Evaluation lab",
+        "Measure retrieval quality and answer faithfulness instead of trusting the pipeline by instinct.",
     )
     st.info(
         "These metrics run on the **bundled sample résumé** — the document the gold "
