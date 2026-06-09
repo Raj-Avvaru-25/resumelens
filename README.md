@@ -147,7 +147,8 @@ the screen until you want it.
 Walks every stage on your actual résumé. The **chunking** stage shows the
 hierarchy plainly: each role is a *parent* (returned for full context); each
 bullet is a *child* (embedded & searched for precision):
-![Hierarchical chunking](docs/screenshots/02-chunking.png)
+<img width="677" height="628" alt="image" src="https://github.com/user-attachments/assets/d726a35d-49b5-4540-abd8-6e67f17cd4a7" />
+)
 
 The **retrieve** stage is the glass box — every bullet's dense / BM25 / RRF /
 rerank score, a 2D map of the embedding space, and the whole matched role that
