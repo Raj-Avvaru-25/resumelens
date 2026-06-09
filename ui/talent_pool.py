@@ -52,9 +52,17 @@ def render(api_key: str | None):
     # --- assemble the document set -------------------------------------------
     docs: dict[str, str] = {}
     if config.DEMO_MODE:
-        # Public demo: lock to the bundled sample pool; no uploads.
+        # Public demo: show the controls but disabled, locked to the sample pool.
         docs.update(_sample_docs())
-        st.caption("🎬 **Demo mode** — ranking the bundled sample candidate pool.")
+        st.checkbox("Use bundled sample pool", value=True, disabled=True)
+        st.file_uploader(
+            "Add résumés (.pdf / .txt)", type=["pdf", "txt"],
+            accept_multiple_files=True, disabled=True,
+        )
+        st.caption(
+            "🎬 **Demo mode** — ranking the bundled sample pool. Adding your own "
+            "résumés is enabled in the full version (clone the repo)."
+        )
         uploads = None
     else:
         if st.checkbox("Use bundled sample pool", value=True):

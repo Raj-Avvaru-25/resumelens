@@ -120,11 +120,19 @@ def _render_setup_sidebar() -> None:
         # --- Résumé source ---
         resume_text: str | None = None
         if config.DEMO_MODE:
-            # Public demo: lock to the bundled sample; no upload/paste.
+            # Public demo: show all source options but disabled, locked to sample.
+            st.radio(
+                "Résumé source",
+                ["Sample résumé", "Upload (.pdf / .txt)", "Paste text"],
+                index=0,
+                disabled=True,
+                help="Upload & paste are available when you run ResumeLens yourself. "
+                     "The public demo is locked to the bundled sample résumé.",
+            )
             resume_text = load_from_text(SAMPLE_PATH.read_text(encoding="utf-8"))
             st.caption(
-                "🎬 **Demo mode** — exploring with the bundled sample résumé. "
-                "Upload & paste are disabled in the public demo."
+                "🎬 **Demo mode** — locked to the bundled sample. Upload & paste are "
+                "enabled in the full version (clone the repo)."
             )
         else:
             source = st.radio(
