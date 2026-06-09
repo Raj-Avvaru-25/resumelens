@@ -65,7 +65,16 @@ def _get_index(resume_text: str):
 
 
 def _api_key() -> str | None:
-    return st.session_state.get("api_key")
+    """The active Anthropic key: env, else the sidebar field, else the inline
+    field a page rendered at the point of need. One source of truth for both."""
+    env = config.get_api_key()
+    if env:
+        return env
+    return (
+        st.session_state.get("api_key_sidebar")
+        or st.session_state.get("api_key_inline")
+        or None
+    )
 
 
 def _resume_name() -> str:
@@ -132,19 +141,16 @@ def _render_setup_sidebar() -> None:
 
         # --- Claude key (step 2, optional) -----------------------------------
         st.markdown("**🔑 Claude API key** · *optional*")
-        env_key = config.get_api_key()
-        if env_key:
+        if config.get_api_key():
             st.success("API key loaded from environment.")
-            st.session_state["api_key"] = env_key
         else:
-            key = st.text_input(
+            st.text_input(
                 "Your Anthropic API key", type="password", placeholder="sk-ant-...",
-                label_visibility="collapsed",
+                label_visibility="collapsed", key="api_key_sidebar",
                 help="Held only in memory for your session and used solely to call "
-                     "Anthropic — never stored, logged, or shared.",
-            ) or None
-            st.session_state["api_key"] = key
-            if key:
+                     "Anthropic. Never stored, logged, or shared.",
+            )
+            if _api_key():
                 st.success("Key set — Claude pages unlocked.")
             else:
                 st.caption(

@@ -96,3 +96,28 @@ def page_header(icon: str, title: str, subtitle: str) -> None:
     """Consistent page title + one-line subtitle."""
     st.title(f"{icon} {title}")
     st.caption(subtitle)
+
+
+def api_key_prompt(context: str = "this feature") -> None:
+    """Inline 'enter your Anthropic key' box, shown at the exact point of need.
+
+    Instead of telling the user to hunt for the key field in the sidebar, render
+    the input right where they hit the wall. It uses the shared widget key
+    ``api_key_inline``; entering a value reruns the app and unlocks every
+    Claude-powered page (the app reads it via _api_key()).
+    """
+    with st.container(border=True):
+        st.markdown(f"#### 🔑 Add your Anthropic API key to use {context}")
+        st.caption(
+            "This is the one Claude-powered step. The RAG tour, evaluation, and "
+            "talent-pool ranking all work without a key."
+        )
+        st.text_input(
+            "Anthropic API key", type="password", placeholder="sk-ant-...",
+            label_visibility="collapsed", key="api_key_inline",
+        )
+        st.caption(
+            "[Get a key →](https://console.claude.com/) · held only in this session, "
+            "sent only to Anthropic, never stored or logged. "
+            "Tip: use a low-limit key you can revoke."
+        )

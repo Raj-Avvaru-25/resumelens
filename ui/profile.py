@@ -10,6 +10,7 @@ import streamlit as st
 
 from rag import extraction, generator
 from rag.pipeline import ResumeIndex
+from ui import controls
 
 _KEY = "profile"
 
@@ -23,7 +24,7 @@ def render(index: ResumeIndex, api_key: str | None):
         "résumés** (feature coming next)."
     )
     if not api_key:
-        st.warning("Add your Anthropic API key in the sidebar to extract a profile.")
+        controls.api_key_prompt("Structured Profile")
         return
 
     if st.button("Extract structured profile", type="primary"):

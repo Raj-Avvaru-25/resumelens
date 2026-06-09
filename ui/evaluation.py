@@ -16,6 +16,7 @@ import streamlit as st
 
 from rag import config, evaluation, faithfulness, generator, query_transform
 from rag.loader import load_from_text
+from ui import controls
 from rag.pipeline import ResumeIndex, build_index, retrieve
 
 _SAMPLE = Path(__file__).resolve().parent.parent / "data" / "sample_resume.txt"
@@ -133,7 +134,7 @@ def _faithfulness_section(index: ResumeIndex, api_key: str | None):
         "* **Groundedness (LLM-judge)** — a strict separate model call rating support."
     )
     if not api_key:
-        st.warning("Add your Anthropic API key in the sidebar to run faithfulness scoring.")
+        controls.api_key_prompt("faithfulness scoring")
         return
 
     n = st.slider("How many questions to score", 1, min(6, len(evaluation.GOLD_SET)), 3)

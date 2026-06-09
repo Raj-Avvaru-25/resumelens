@@ -15,6 +15,7 @@ import streamlit as st
 
 from rag import config, corpus, generator, query_transform
 from rag.loader import load_from_pdf, load_from_text
+from ui import controls
 
 _ROOT = Path(__file__).resolve().parent.parent
 _MAIN_SAMPLE = _ROOT / "data" / "sample_resume.txt"
@@ -94,7 +95,7 @@ def render(api_key: str | None):
     with st.expander("🗂️ Structured profiles (needed for filtering)", expanded=not have_profiles):
         st.caption("Extract a typed profile per résumé so you can filter on seniority / years / skills.")
         if not api_key:
-            st.warning("Add your API key in the sidebar to extract profiles.")
+            controls.api_key_prompt("profile extraction")
         elif st.button("Extract profiles for the pool", type="primary"):
             with st.spinner("Extracting profiles with Claude…"):
                 corpus.extract_profiles(generator.get_client(api_key), candidates)

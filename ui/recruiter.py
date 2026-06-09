@@ -12,7 +12,7 @@ import streamlit as st
 
 from rag import generator, query_transform
 from rag.pipeline import ResumeIndex, retrieve
-from ui import components
+from ui import components, controls
 
 _HISTORY_KEY = "recruiter_history"
 
@@ -47,16 +47,28 @@ def render(index: ResumeIndex, api_key: str | None, context_mode: str = "full",
 
     typed = st.chat_input("Answer the recruiter…")
 
-    if not api_key:
-        if start or typed:
-            st.warning("Add your Anthropic API key in the sidebar to start.")
+    # Resolve the intended action: the button, a typed answer, or one we deferred
+    # while waiting for the user to add an API key.
+    deferred = st.session_state.pop("recruiter_pending", None)
+    if start:
+        question, retrieval = _OPENING_PROMPT, "key claims projects impact ownership"
+    elif typed:
+        question, retrieval = typed, typed
+    elif deferred:
+        question, retrieval = deferred
+    else:
+        question = retrieval = None
+
+    if question is None:
         return
 
-    if start:
-        _turn(index, api_key, _OPENING_PROMPT, "key claims projects impact ownership",
-              context_mode, effort, transform)
-    elif typed:
-        _turn(index, api_key, typed, typed, context_mode, effort, transform)
+    if not api_key:
+        # Bring key entry to the point of need; resume the action automatically after.
+        st.session_state["recruiter_pending"] = (question, retrieval)
+        controls.api_key_prompt("the Cynical Recruiter")
+        return
+
+    _turn(index, api_key, question, retrieval, context_mode, effort, transform)
 
 
 def _turn(index: ResumeIndex, api_key: str, user_text: str, retrieval_query: str,

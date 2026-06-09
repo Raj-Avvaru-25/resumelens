@@ -11,7 +11,7 @@ import streamlit as st
 
 from rag import generator, query_transform
 from rag.pipeline import ResumeIndex, retrieve
-from ui import components
+from ui import components, controls
 
 _HISTORY_KEY = "understanding_history"
 
@@ -50,12 +50,15 @@ def render(index: ResumeIndex, api_key: str | None, context_mode: str = "full",
             st.markdown(turn["content"])
 
     typed = st.chat_input("Ask about the resume…")
-    question = pending or typed
+    deferred = st.session_state.pop("understanding_pending_q", None)
+    question = pending or typed or deferred
     if not question:
         return
 
     if not api_key:
-        st.warning("Add your Anthropic API key in the sidebar to ask questions.")
+        # Bring key entry to the point of need; resume the question automatically after.
+        st.session_state["understanding_pending_q"] = question
+        controls.api_key_prompt("Deep Understanding")
         return
 
     _answer(index, api_key, question, context_mode, effort, cite, transform)

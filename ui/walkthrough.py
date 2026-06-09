@@ -13,7 +13,7 @@ from sklearn.decomposition import PCA
 
 from rag import config, generator
 from rag.pipeline import ResumeIndex, retrieve
-from ui import components
+from ui import components, controls
 
 
 def _est_tokens(text: str) -> int:
@@ -218,7 +218,7 @@ def _stage_generate(index: ResumeIndex, api_key: str | None):
             st.info("Ask a question in step ④ first.")
             return
         if not api_key:
-            st.warning("Add your Anthropic API key in the sidebar to run generation.")
+            controls.api_key_prompt("generation")
             return
         if st.button("Answer with Claude", key="walk_generate"):
             client = generator.get_client(api_key)
@@ -251,7 +251,7 @@ def _stage_effort_ab(index: ResumeIndex, api_key: str | None):
             "with your numbers, not an estimate."
         )
         if not api_key:
-            st.warning("Add your Anthropic API key in the sidebar to run the A/B.")
+            controls.api_key_prompt("the effort A/B")
             return
 
         question = st.text_input(
