@@ -38,6 +38,11 @@ SAMPLE_PATH = Path(__file__).parent / "data" / "sample_resume.txt"
 # Bump this whenever the index structure changes so a stale cached index rebuilds.
 INDEX_VERSION = "2-hybrid-rerank"
 
+# Résumé-source pill labels (with icons) for the sidebar picker.
+_SRC_SAMPLE = "📄 Sample"
+_SRC_UPLOAD = "⬆️ Upload"
+_SRC_PASTE = "📋 Paste"
+
 
 # --------------------------------------------------------------------------- #
 # Shared state helpers
@@ -89,72 +94,66 @@ def _render_setup_sidebar() -> None:
         st.divider()
         st.subheader("⚙️ Setup")
 
-        # --- API key ---
-        env_key = config.get_api_key()
-        if env_key:
-            st.success("API key loaded from environment.")
-            st.session_state["api_key"] = env_key
-        else:
-            key = st.text_input(
-                "🔑 Your Anthropic API key",
-                type="password",
-                placeholder="sk-ant-...",
-                help="Held only in memory for your session and used solely to call "
-                     "Anthropic — never stored, logged, or shared.",
-            ) or None
-            st.session_state["api_key"] = key
-            if key:
-                st.success("Key set for this session — Claude pages unlocked.")
-            else:
-                st.info(
-                    "**Bring your own key** to unlock the Claude-powered pages "
-                    "(Deep understanding, Cynical recruiter, Structured profile).\n\n"
-                    "The **RAG tour, retrieval evaluation, and talent-pool ranking "
-                    "work with no key.**"
-                )
-                st.caption(
-                    "[Get an API key →](https://console.claude.com/)  ·  Your key "
-                    "lives only in this session and is sent only to Anthropic — "
-                    "never stored, logged, or shared.  \n"
-                    "💡 Tip: for any demo, use a key with a low spend limit that you "
-                    "can revoke afterwards."
-                )
-
-        # --- Résumé source ---
+        # --- Résumé (step 1) — prominent pill picker --------------------------
+        st.markdown("**📄 Résumé** — pick a source")
+        sources = [_SRC_SAMPLE, _SRC_UPLOAD, _SRC_PASTE]
         resume_text: str | None = None
         if config.DEMO_MODE:
-            # Public demo: show all source options but disabled, locked to sample.
-            st.radio(
-                "Résumé source",
-                ["Sample résumé", "Upload (.pdf / .txt)", "Paste text"],
-                index=0,
-                disabled=True,
-                help="Upload & paste are available when you run ResumeLens yourself. "
-                     "The public demo is locked to the bundled sample résumé.",
+            # Public demo: show all options but disabled, locked to the sample.
+            st.segmented_control(
+                "Résumé source", sources, default=_SRC_SAMPLE,
+                disabled=True, label_visibility="collapsed",
+                help="Upload & paste are available when you run ResumeLens yourself.",
             )
             resume_text = load_from_text(SAMPLE_PATH.read_text(encoding="utf-8"))
             st.caption(
-                "🎬 **Demo mode** — locked to the bundled sample. Upload & paste are "
-                "enabled in the full version (clone the repo)."
+                "🎬 **Demo mode** — locked to the bundled sample. **Upload** & "
+                "**Paste** are enabled in the full version (clone the repo)."
             )
         else:
-            source = st.radio(
-                "Résumé source", ["Sample résumé", "Upload (.pdf / .txt)", "Paste text"],
-            )
-            if source == "Sample résumé":
+            choice = st.segmented_control(
+                "Résumé source", sources, default=_SRC_SAMPLE,
+                label_visibility="collapsed",
+            ) or _SRC_SAMPLE
+            if choice == _SRC_SAMPLE:
                 resume_text = load_from_text(SAMPLE_PATH.read_text(encoding="utf-8"))
-            elif source == "Upload (.pdf / .txt)":
-                up = st.file_uploader("Upload", type=["pdf", "txt"], label_visibility="collapsed")
+            elif choice == _SRC_UPLOAD:
+                up = st.file_uploader("Upload a .pdf or .txt résumé", type=["pdf", "txt"])
                 if up is not None:
                     resume_text = (
                         load_from_pdf(up.getvalue()) if up.name.lower().endswith(".pdf")
                         else load_from_text(up.getvalue().decode("utf-8", errors="ignore"))
                     )
             else:
-                pasted = st.text_area("Paste the résumé text", height=200, label_visibility="collapsed")
+                pasted = st.text_area("Paste the résumé text", height=200)
                 if pasted.strip():
                     resume_text = load_from_text(pasted)
         st.session_state["resume_text"] = resume_text
+
+        # --- Claude key (step 2, optional) -----------------------------------
+        st.markdown("**🔑 Claude API key** · *optional*")
+        env_key = config.get_api_key()
+        if env_key:
+            st.success("API key loaded from environment.")
+            st.session_state["api_key"] = env_key
+        else:
+            key = st.text_input(
+                "Your Anthropic API key", type="password", placeholder="sk-ant-...",
+                label_visibility="collapsed",
+                help="Held only in memory for your session and used solely to call "
+                     "Anthropic — never stored, logged, or shared.",
+            ) or None
+            st.session_state["api_key"] = key
+            if key:
+                st.success("Key set — Claude pages unlocked.")
+            else:
+                st.caption(
+                    "Unlocks the Claude pages (Deep understanding · Cynical recruiter "
+                    "· Structured profile). The RAG tour, eval & talent pool work with "
+                    "no key.  \n[Get a key →](https://console.claude.com/) · lives only "
+                    "in this session, sent only to Anthropic.  \n💡 Tip: use a "
+                    "low-limit key you can revoke afterwards."
+                )
 
         with st.expander("🔧 Models & retrieval"):
             st.caption(
