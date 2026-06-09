@@ -153,7 +153,8 @@ bullet is a *child* (embedded & searched for precision):
 The **retrieve** stage is the glass box — every bullet's dense / BM25 / RRF /
 rerank score, a 2D map of the embedding space, and the whole matched role that
 gets handed to the model:
-![Two-stage hybrid retrieval](docs/screenshots/03-retrieve.png)
+<img width="677" height="303" alt="image" src="https://github.com/user-attachments/assets/c50bc7c5-e474-4e1a-9ba0-ceafe2f0b94b" />
+
 
 ### 📊 Retrieval evaluation
 Recall@k / MRR@k over a labeled gold set across pipeline variants (and optional
