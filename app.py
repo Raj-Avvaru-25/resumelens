@@ -114,7 +114,10 @@ def _render_setup_sidebar() -> None:
                 )
                 st.caption(
                     "[Get an API key →](https://console.claude.com/)  ·  Your key "
-                    "lives only in this session and is sent only to Anthropic."
+                    "lives only in this session and is sent only to Anthropic — "
+                    "never stored, logged, or shared.  \n"
+                    "💡 Tip: for any demo, use a key with a low spend limit that you "
+                    "can revoke afterwards."
                 )
 
         # --- Résumé source ---
