@@ -178,7 +178,8 @@ Search a **pool** of résumés: filter on the structured fields, then rank
 candidates for a free-text need, each shown with the role that matched and why.
 Here's "who has shipped fault-tolerant distributed systems?" — the two
 distributed-systems engineers rank top, frontend/ML at the bottom:
-![Multi-résumé candidate ranking](docs/screenshots/04-talent-pool.png)
+<img width="398" height="719" alt="image" src="https://github.com/user-attachments/assets/34958661-4f50-4828-add8-0dab02cba7dd" />
+
 
 ---
 
