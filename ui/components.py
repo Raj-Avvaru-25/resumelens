@@ -551,6 +551,18 @@ def inject_home_layout() -> None:
         }
         /* Make the "?" help icon clearly visible on the dark card. */
         [data-testid="stMainBlockContainer"] [data-testid="stTooltipIcon"] svg { fill: rgba(255,255,255,.8) !important; }
+        /* Hide the native uploader button content (icon + "Upload") — keep only ::after. */
+        [data-testid="stMainBlockContainer"] [class*="st-key-rlcard_upload"] [data-testid="stFileUploaderDropzone"] button > * { display: none !important; }
+        /* Claude API key field: translucent dark glass instead of stark white. */
+        [data-testid="stMainBlockContainer"] [class*="st-key-rlcard_upload"] [data-testid="stTextInput"] input {
+          background: rgba(255,255,255,.09) !important; color: #fff !important;
+          border: 1px solid rgba(255,255,255,.28) !important; border-radius: 11px !important;
+        }
+        [data-testid="stMainBlockContainer"] [class*="st-key-rlcard_upload"] [data-testid="stTextInput"] input::placeholder { color: rgba(255,255,255,.5) !important; }
+        [data-testid="stMainBlockContainer"] [class*="st-key-rlcard_upload"] [data-testid="stTextInput"] [data-baseweb="input"] {
+          background: transparent !important; border-color: rgba(255,255,255,.28) !important;
+        }
+        [data-testid="stMainBlockContainer"] [class*="st-key-rlcard_upload"] [data-testid="stTextInput"] svg { fill: rgba(255,255,255,.7) !important; }
         </style>
         <div class="rl-home-bg"></div>
         """,
