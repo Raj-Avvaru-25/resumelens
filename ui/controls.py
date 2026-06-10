@@ -9,6 +9,8 @@ walkthrough) keeps working.
 
 from __future__ import annotations
 
+import re
+
 import streamlit as st
 
 from rag import config
@@ -110,10 +112,12 @@ def api_key_prompt(context: str = "this feature") -> None:
     """Inline 'enter your Anthropic key' box, shown at the exact point of need.
 
     Instead of telling the user to hunt for the key field in the sidebar, render
-    the input right where they hit the wall. It uses the shared widget key
-    ``api_key_inline``; entering a value reruns the app and unlocks every
-    Claude-powered page (the app reads it via _api_key()).
+    the input right where they hit the wall. The widget key is derived from
+    ``context`` so a page can show more than one prompt (e.g. the walkthrough's
+    GENERATE and Effort A/B steps) without colliding; _api_key() reads any
+    ``api_key_inline*`` value.
     """
+    slug = re.sub(r"[^a-z0-9]+", "_", context.lower()).strip("_") or "x"
     with st.container(border=True):
         st.markdown(f"#### 🔑 Add your Anthropic API key to use {context}")
         st.caption(
@@ -122,7 +126,7 @@ def api_key_prompt(context: str = "this feature") -> None:
         )
         st.text_input(
             "Anthropic API key", type="password", placeholder="sk-ant-...",
-            label_visibility="collapsed", key="api_key_inline",
+            label_visibility="collapsed", key=f"api_key_inline_{slug}",
         )
         st.caption(
             "[Get a key →](https://console.claude.com/) · held only in this session, "

@@ -77,12 +77,15 @@ def _api_key() -> str | None:
     env = config.get_api_key()
     if env:
         return env
-    return (
-        st.session_state.get("api_key_sidebar")
-        or st.session_state.get("api_key_home")
-        or st.session_state.get("api_key_inline")
-        or None
-    )
+    if st.session_state.get("api_key_sidebar"):
+        return st.session_state["api_key_sidebar"]
+    if st.session_state.get("api_key_home"):
+        return st.session_state["api_key_home"]
+    # Inline prompts use per-context keys (api_key_inline_<slug>); pick any set one.
+    for k, v in st.session_state.items():
+        if k.startswith("api_key_inline") and v:
+            return v
+    return None
 
 
 def _resume_name() -> str:
